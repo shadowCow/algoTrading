@@ -1,0 +1,46 @@
+
+class Market:
+    def __init__(self, symbol):
+        self.symbol = symbol
+
+markets = [
+    Market("AD"),
+    Market("BO"),
+    Market("BP"),
+    Market("C"),
+    Market("CC"),
+    Market("CD"),
+    Market("CL"),
+    Market("CT"),
+    Market("DJ"),
+    Market("EC"),
+    Market("ED"),
+    Market("FC"),
+    Market("FV"),
+    Market("GC"),
+    Market("HG"),
+    Market("HO"),
+    Market("JY"),
+    Market("KC"),
+    Market("LB"),
+    Market("LC"),
+    Market("LH"),
+    Market("ND"),
+    Market("NE1"),
+    Market("NG"),
+    Market("NK"),
+    Market("OJ"),
+    Market("PA"),
+    Market("PL"),
+    Market("RR"),
+    Market("S"),
+    Market("SB"),
+    Market("SF"),
+    Market("SI"),
+    Market("SM"),
+    Market("SP"),
+    Market("TU"),
+    Market("TY"),
+    Market("US"),
+    Market("W")
+]
