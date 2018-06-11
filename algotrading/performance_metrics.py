@@ -1,5 +1,5 @@
 
-class ResultsSingleMarket:
+class ResultsSingleMarket(object):
     def __init__(self, total_net_gain, expectation, max_drawdown, num_trades):
         self.total_net_gain = total_net_gain
         self.expectation = expectation
@@ -16,7 +16,8 @@ class ResultsSingleMarket:
 
     __repr__ = __str__
 
-class ResultsAcrossMarkets:
+
+class ResultsAcrossMarkets(object):
     def __init__(self, agg_net_gain, agg_expectation, agg_max_drawdown, agg_num_trades, pct_markets_profitable):
         self.agg_net_gain = agg_net_gain
         self.agg_expectation = agg_expectation
@@ -35,7 +36,8 @@ class ResultsAcrossMarkets:
 
     __repr__ = __str__
 
-class ResultsAcrossParameters:
+
+class ResultsAcrossParameters(object):
     def __init__(self, agg_net_gain, agg_expectation, agg_max_drawdown, agg_num_trades, pct_markets_profitable):
         self.agg_net_gain = agg_net_gain
         self.agg_expectation = agg_expectation
@@ -43,7 +45,8 @@ class ResultsAcrossParameters:
         self.agg_num_trades = agg_num_trades
         self.pct_markets_profitable = pct_markets_profitable
 
-class AggregatedMetric:
+
+class AggregatedMetric(object):
     def __init__(self, avg, stddev, max, min):
         self.avg = avg
         self.stddev = stddev

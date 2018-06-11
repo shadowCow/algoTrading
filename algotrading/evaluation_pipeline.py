@@ -2,14 +2,14 @@ import pandas
 import numpy
 import os.path as path
 import sys
+import algotrading.data.markets as markets
+import algotrading.data.feature as feature_engineering
+import algotrading.data.features as features
+import algotrading.tactics.tactics as tactics
+import algotrading.tradingmodel.trading_models as trading_models
+import algotrading.tradingmodel.trading_model as trading_model
+import algotrading.decisionmodel.decision_models as decision_models
 
-import data.markets as markets
-import data.feature as feature_engineering
-import data.features as features
-import tactics.tactics as tactics
-import tradingmodel.trading_models as trading_models
-import tradingmodel.trading_model as trading_model
-import decisionmodel.decision_models as decision_models
 
 def run_pipeline(markets_data, my_features, my_trading_model):
     markets_with_features = feature_engineering.apply_features_to_markets(
@@ -33,8 +33,8 @@ def load_data(data_directory, market):
         file_path,
         delim_whitespace=True,
         header=1,
-        names=['date','time','o','h','l','c','atr','volume'],
-        usecols=['date','o','h','l','c'],
+        names=['date', 'time', 'o', 'h', 'l', 'c', 'atr', 'volume'],
+        usecols=['date', 'o', 'h', 'l', 'c'],
         dtype={
             'o': numpy.float64,
             'h': numpy.float64,
@@ -46,10 +46,11 @@ def load_data(data_directory, market):
     )
     return {
         "market": market,
-        "data": df
+        "data": df,
     }
 
-if __name__ == '__main__':
+
+def main():
     data_directory = sys.argv[1]
     markets_data = list(map((lambda m: load_data(data_directory, m)), markets.markets))
 
@@ -61,3 +62,8 @@ if __name__ == '__main__':
     results = run_pipeline(markets_data, my_features, my_trading_model)
     print(results)
     # maybe store results somewhere next...
+
+
+if __name__ == '__main__':
+    main()
+
