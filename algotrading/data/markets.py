@@ -1,8 +1,8 @@
-
 class Market:
     def __init__(self, symbol, long_name):
         self.symbol = symbol
         self.long_name = long_name
+
 
 markets = [
     Market("AD", "Australian Dollar"),

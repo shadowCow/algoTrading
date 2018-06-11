@@ -1,5 +1,6 @@
-import pandas
-import performance_metrics
+import pandas as pd
+from algotrading.performance_metrics import ResultsSingleMarket, ResultsAcrossMarkets, AggregatedMetric
+
 
 class TradingModel:
     """A TradingModel converts market data into trades and trade outcomes.
@@ -42,7 +43,7 @@ def evaluate_trading_model_on_market(df, feature_columns, trading_model):
     # need to prepend 0.
     # if the net gain is always negative from the first bar,
     # max net gain will be negative, which is not true, because you start at 0.
-    running_net_gain = pandas.Series([0]).append(outcome_column).cumsum()
+    running_net_gain = pd.Series([0]).append(outcome_column).cumsum()
     running_max_net_gain = running_net_gain.cummax()
     running_drawdown = running_max_net_gain - running_net_gain
 
@@ -51,12 +52,13 @@ def evaluate_trading_model_on_market(df, feature_columns, trading_model):
     expectation = total_net_gain / num_trades if num_trades > 0 else 0
     max_drawdown = running_drawdown.max()
 
-    return performance_metrics.ResultsSingleMarket(
+    return ResultsSingleMarket(
         total_net_gain,
         expectation,
         max_drawdown,
         num_trades
     )
+
 
 def evaluate_trading_model_multiple_markets(markets, feature_columns, trading_model):
     def get_results(market):
@@ -67,12 +69,12 @@ def evaluate_trading_model_multiple_markets(markets, feature_columns, trading_mo
         )
         return {
             "market": market["market"],
-            "results": results
+            "results": results,
         }
 
     results_per_market = list(map(get_results, markets))
 
-    return performance_metrics.ResultsAcrossMarkets(
+    return ResultsAcrossMarkets(
         compute_aggregated_net_gain(results_per_market),
         compute_aggregated_expectation(results_per_market),
         compute_aggregated_max_drawdown(results_per_market),
@@ -82,35 +84,40 @@ def evaluate_trading_model_multiple_markets(markets, feature_columns, trading_mo
 
 
 def compute_aggregated_net_gain(results_per_market):
-    all_net_gains = pandas.Series(list(map((lambda x: x["results"].total_net_gain), results_per_market)))
+    all_net_gains = pd.Series(list(map((lambda x: x["results"].total_net_gain), results_per_market)))
 
     return compute_aggregated_metric(all_net_gains)
 
+
 def compute_aggregated_expectation(results_per_market):
-    all_expectations = pandas.Series(list(map((lambda x: x["results"].expectation), results_per_market)))
+    all_expectations = pd.Series(list(map((lambda x: x["results"].expectation), results_per_market)))
 
     return compute_aggregated_metric(all_expectations)
 
+
 def compute_aggregated_max_drawdown(results_per_market):
-    all_max_drawdowns = pandas.Series(list(map((lambda x: x["results"].max_drawdown), results_per_market)))
+    all_max_drawdowns = pd.Series(list(map((lambda x: x["results"].max_drawdown), results_per_market)))
 
     return compute_aggregated_metric(all_max_drawdowns)
 
+
 def compute_aggregated_num_trades(results_per_market):
-    all_num_trades = pandas.Series(list(map((lambda x: x["results"].num_trades), results_per_market)))
+    all_num_trades = pd.Series(list(map((lambda x: x["results"].num_trades), results_per_market)))
 
     return compute_aggregated_metric(all_num_trades)
 
+
 def compute_aggregated_metric(individual_values):
-    return performance_metrics.AggregatedMetric(
+    return AggregatedMetric(
         individual_values.mean(),
         individual_values.std(),
         individual_values.max(),
         individual_values.min()
     )
 
+
 def compute_pct_markets_profitable(results_per_market):
-    all_net_gains = pandas.Series(list(map((lambda x: x["results"].total_net_gain), results_per_market)))
+    all_net_gains = pd.Series(list(map((lambda x: x["results"].total_net_gain), results_per_market)))
 
     profitable_markets = list(filter(lambda m: m > 0, all_net_gains))
 

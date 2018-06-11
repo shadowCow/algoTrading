@@ -16,7 +16,7 @@ class RandomDecisionTests(unittest.TestCase):
     def test_long_only(self):
         test_df = RandomDecisionTests.get_test_data_frame()
 
-        make_decisions(
+        test_df = make_decisions(
             test_df,
             feature_columns,
             random_decision_model["long_only"]
@@ -29,7 +29,7 @@ class RandomDecisionTests(unittest.TestCase):
     def test_short_only(self):
         test_df = RandomDecisionTests.get_test_data_frame()
 
-        make_decisions(
+        test_df = make_decisions(
             test_df,
             feature_columns,
             random_decision_model["short_only"]
@@ -42,7 +42,7 @@ class RandomDecisionTests(unittest.TestCase):
     def test_long_or_short(self):
         test_df = RandomDecisionTests.get_test_data_frame()
 
-        make_decisions(
+        test_df = make_decisions(
             test_df,
             feature_columns,
             random_decision_model["long_or_short"]

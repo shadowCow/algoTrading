@@ -1,19 +1,19 @@
-from . import feature
+from algotrading.data.feature import Feature, VariableTypes
 
-oc_change = feature.Feature(
+oc_change = Feature(
     'oc_change',
-    feature.VariableTypes.continuous,
+    VariableTypes.continuous,
     lambda df: df.c - df.o
 )
 
-oc_is_up = feature.Feature(
+oc_is_up = Feature(
     'oc_is_up',
-    feature.VariableTypes.binary,
+    VariableTypes.binary,
     lambda df: df.c > df.o
 )
 
-oc_is_down = feature.Feature(
+oc_is_down = Feature(
     'oc_is_down',
-    feature.VariableTypes.binary,
+    VariableTypes.binary,
     lambda df: df.c < df.o
 )
