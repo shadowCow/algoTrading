@@ -37,3 +37,7 @@ class EvaluationPipelineTests(unittest.TestCase):
             my_trading_model
         )
         print(results)
+
+
+if __name__ == '__main__':
+    unittest.main()

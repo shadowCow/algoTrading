@@ -63,3 +63,7 @@ class FeatureTests(unittest.TestCase):
         self.assertAlmostEqual(expected_data_two_f2[2], actual_data_two_f2[2])
         self.assertAlmostEqual(expected_data_two_f2[3], actual_data_two_f2[3])
         self.assertAlmostEqual(expected_data_two_f2[4], actual_data_two_f2[4])
+
+
+if __name__ == '__main__':
+    unittest.main()

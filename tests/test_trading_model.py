@@ -63,3 +63,7 @@ class TradingModelTests(unittest.TestCase):
         self.assertAlmostEqual(results.agg_num_trades.min, 3)
 
         self.assertAlmostEqual(results.pct_markets_profitable, 0.5)
+
+
+if __name__ == '__main__':
+    unittest.main()
