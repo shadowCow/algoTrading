@@ -5,7 +5,7 @@ class TradingDecision:
         self.action = action
 
 tradingDecisions = {
-    "Buy": new TradingDecision("Buy", 1.0),
-    "Sell": new TradingDecision("Sell", -1.0),
-    "Neutral": new TradingDecision("Neutral", 0.0)
+    "Buy": TradingDecision("Buy", 1.0),
+    "Sell": TradingDecision("Sell", -1.0),
+    "Neutral": TradingDecision("Neutral", 0.0)
 }
