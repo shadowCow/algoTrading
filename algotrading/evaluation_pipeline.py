@@ -3,7 +3,7 @@ import numpy
 import os.path as path
 import sys
 import algotrading.data.markets as markets
-from algotrading.data.feature import Feature
+import algotrading.data.feature as feature_engineering
 import algotrading.data.features as features
 import algotrading.tactics.tactics as tactics
 import algotrading.tradingmodel.trading_models as trading_models
@@ -12,7 +12,7 @@ import algotrading.decisionmodel.decision_models as decision_models
 
 
 def run_pipeline(markets_data, my_features, my_trading_model):
-    markets_with_features = Feature.apply_features_to_markets(
+    markets_with_features = feature_engineering.apply_features_to_markets(
         my_features,
         markets_data
     )
