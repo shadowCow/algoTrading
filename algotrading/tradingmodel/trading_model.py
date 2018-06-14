@@ -36,9 +36,9 @@ class TradingModel:
 
 
 def evaluate_trading_model_on_market(df, feature_columns, trading_model):
-    outcome_df = trading_model.simulate_trades(df, feature_columns)
-    print(outcome_df)
+    outcome_df = trading_model.simulate_trades(df, feature_columns).dropna()
     outcome_column = outcome_df['outcome']
+    # print(outcome_df)
 
     # need to prepend 0.
     # if the net gain is always negative from the first bar,
