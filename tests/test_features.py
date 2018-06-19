@@ -92,10 +92,14 @@ class TestVariousFeatures(unittest.TestCase):
         self.assertAlmostEqual(expected_data[3], actual_data[3], places=3)
         self.assertAlmostEqual(expected_data[4], actual_data[4], places=3)
 
-    # def test_normalized(self):
-    #
-    # def test_streak_counter(self):
-    #
+    def test_normalized(self):
+        # TODO write test
+        pass
+
+    def test_streak_counter(self):
+        # TODO write test
+        pass
+
     def test_rolling_max(self):
         markets_with_features = feature_engineering.apply_features_to_markets(
             [features.rolling_max_feature(features.raw_data_as_feature('h'), 3)],
@@ -123,9 +127,13 @@ class TestVariousFeatures(unittest.TestCase):
         self.assertAlmostEqual(expected_data[3], actual_data[3], places=3)
         self.assertAlmostEqual(expected_data[4], actual_data[4], places=3)
 
-    # def test_is_max_over_window(self):
-    #
-    # def test_is_min_over_window(self):
+    def test_is_max_over_window(self):
+        # TODO write test
+        pass
+
+    def test_is_min_over_window(self):
+        # TODO write test
+        pass
 
     # helper function to do element by element equality of two series
     @staticmethod
