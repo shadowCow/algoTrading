@@ -35,6 +35,12 @@ def get_test_data_frame_two():
         columns = ['o','h','l','c']
     )
 
+def get_test_market_a():
+    return {"market":{"symbol":"A"}, "data":get_test_data_frame_one()}
+
+def get_test_market_b():
+    return {"market":{"symbol":"B"}, "data":get_test_data_frame_two()}
+
 def get_test_feature_one():
     def transform(df):
         return df.h - df.l

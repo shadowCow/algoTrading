@@ -9,7 +9,6 @@ class Feature(object):
         self.transform = transform
 
 
-
 def apply_features_to_markets(features, markets_data):
     def apply_features_to_market(features, market):
         # get the new data series by computing the features.

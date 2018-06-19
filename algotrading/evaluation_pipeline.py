@@ -33,17 +33,19 @@ def load_data(data_directory, market):
         file_path,
         delim_whitespace=True,
         header=1,
-        names=['date', 'time', 'o', 'h', 'l', 'c', 'atr', 'volume'],
-        usecols=['date', 'o', 'h', 'l', 'c'],
+        names=['date', 'time', 'o', 'h', 'l', 'c', 'tr', 'volume'],
+        usecols=['date', 'o', 'h', 'l', 'c', 'tr'],
         dtype={
             'o': numpy.float64,
             'h': numpy.float64,
             'l': numpy.float64,
-            'c': numpy.float64
+            'c': numpy.float64,
+            'tr': numpy.float64
         },
         index_col=0,
         parse_dates=True
     )
+
     return {
         "market": market,
         "data": df,
@@ -66,4 +68,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
