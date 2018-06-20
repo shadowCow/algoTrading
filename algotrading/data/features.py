@@ -73,6 +73,26 @@ def rolling_min_feature(feature, length):
         lambda df: min_over_window(feature.transform(df), length)
     )
 
+oc_is_up_streak = Feature(
+    'oc_is_up_streak',
+    VariableTypes.discrete,
+    lambda df: streak_counter(df, 'oc_is_up')
+)
+
+def is_max_feature(feature, length):
+    return Feature(
+        'is_max_{}_{}'.format(length, feature.name),
+        feature.variable_type,
+        lambda df: is_max_over_window(feature.transform(df), length)
+    )
+
+def is_min_feature(feature, length):
+    return Feature(
+        'is_min_{}_{}'.format(length, feature.name),
+        feature.variable_type,
+        lambda df: is_min_over_window(feature.transform(df), length)
+    )
+
 # common transformations
 def moving_average(column, length):
     return column.rolling(window=length, min_periods=length).mean()
@@ -93,4 +113,4 @@ def is_max_over_window(column, length):
     return column == max_over_window(column, length)
 
 def is_min_over_window(column, length):
-    return column == is_min_over_window(column, length)
+    return column == min_over_window(column, length)

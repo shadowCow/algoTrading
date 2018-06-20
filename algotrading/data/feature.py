@@ -26,5 +26,6 @@ def apply_features_to_markets(features, markets_data):
 
 class VariableTypes(Enum):
     continuous = 1
-    binary = 2
-    multiclass = 3
+    discrete = 2
+    binary = 3
+    multiclass = 4

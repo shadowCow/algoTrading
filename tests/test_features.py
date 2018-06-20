@@ -99,6 +99,13 @@ class TestVariousFeatures(unittest.TestCase):
     def test_streak_counter(self):
         # TODO write test
         pass
+        # markets_with_features = TestVariousFeatures.get_test_data_with_feature(
+        #     features.oc_is_up_streak
+        # )
+        #
+        # expected_data = pd.Series([1,2,3,0,0], index=dates)
+        # actual_data = markets_with_features[0]['data']['oc_is_up_streak']
+        # TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
 
     def test_rolling_max(self):
         markets_with_features = feature_engineering.apply_features_to_markets(
@@ -128,12 +135,24 @@ class TestVariousFeatures(unittest.TestCase):
         self.assertAlmostEqual(expected_data[4], actual_data[4], places=3)
 
     def test_is_max_over_window(self):
-        # TODO write test
-        pass
+        markets_with_features = TestVariousFeatures.get_test_data_with_feature(
+            features.is_max_feature(features.raw_data_as_feature('c'), 3)
+        )
+
+        # i think nan would be preferred for the first 2, but whatever.
+        expected_data = pd.Series([False, False, True, False, False])
+        actual_data = markets_with_features[0]['data']['is_max_3_c']
+        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
 
     def test_is_min_over_window(self):
-        # TODO write test
-        pass
+        markets_with_features = TestVariousFeatures.get_test_data_with_feature(
+            features.is_min_feature(features.raw_data_as_feature('c'), 3)
+        )
+
+        # i think nan would be preferred for the first 2, but whatever.
+        expected_data = pd.Series([False, False, False, True, True])
+        actual_data = markets_with_features[0]['data']['is_min_3_c']
+        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
 
     # helper function to do element by element equality of two series
     @staticmethod
