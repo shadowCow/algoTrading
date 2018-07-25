@@ -23,6 +23,15 @@ class TestVariousFeatures(unittest.TestCase):
         actual_data = markets_with_features[0]['data']['oc_change']
         TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
 
+    def test_oc_range(self):
+        markets_with_features = TestVariousFeatures.get_test_data_with_feature(
+            features.oc_range
+        )
+
+        expected_data = pd.Series([0.8, 1.0, 1.3, 1.0, 1.2], index=dates)
+        actual_data = markets_with_features[0]['data']['oc_range']
+        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+
     def test_hl_range(self):
         markets_with_features = TestVariousFeatures.get_test_data_with_feature(
             features.hl_range

@@ -16,6 +16,12 @@ oc_change = Feature(
     lambda df: df.c - df.o
 )
 
+oc_range = Feature(
+    'oc_range',
+    VariableTypes.continuous,
+    lambda df: (df.c - df.o).abs()
+)
+
 hl_range = Feature(
     'hl_range',
     VariableTypes.continuous,
