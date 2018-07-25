@@ -97,15 +97,14 @@ class TestVariousFeatures(unittest.TestCase):
         pass
 
     def test_streak_counter(self):
-        # TODO write test
-        pass
-        # markets_with_features = TestVariousFeatures.get_test_data_with_feature(
-        #     features.oc_is_up_streak
-        # )
-        #
-        # expected_data = pd.Series([1,2,3,0,0], index=dates)
-        # actual_data = markets_with_features[0]['data']['oc_is_up_streak']
-        # TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        markets_with_features = feature_engineering.apply_features_to_markets(
+            [features.streak_counter_feature(features.oc_is_up)],
+            [get_test_market_a()]
+        )
+
+        expected_data = pd.Series([0,1,2,0,-1], index=dates)
+        actual_data = markets_with_features[0]['data']['streak_oc_is_up']
+        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
 
     def test_rolling_max(self):
         markets_with_features = feature_engineering.apply_features_to_markets(

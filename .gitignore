@@ -4,3 +4,6 @@ target/
 
 # ide files
 .idea
+
+# throwaway code
+experimenting.py

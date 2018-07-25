@@ -1,4 +1,6 @@
 from algotrading.data.feature import Feature, VariableTypes
+import pandas as pd
+import numpy as np
 
 def raw_data_as_feature(col_name):
     return Feature(
@@ -73,11 +75,20 @@ def rolling_min_feature(feature, length):
         lambda df: min_over_window(feature.transform(df), length)
     )
 
-oc_is_up_streak = Feature(
-    'oc_is_up_streak',
-    VariableTypes.discrete,
-    lambda df: streak_counter(df, 'oc_is_up')
-)
+def streak_counter_feature(feature):
+    def include_feature_in_df(df, feature):
+        new_col = feature.transform(df).rename(feature.name)
+        new_df = pd.concat([df, new_col], axis=1)
+        return streak_counter(
+            new_df,
+            feature.name
+        )
+
+    return Feature(
+        'streak_{}'.format(feature.name),
+        VariableTypes.discrete,
+        lambda df: include_feature_in_df(df, feature)
+    )
 
 def is_max_feature(feature, length):
     return Feature(
@@ -101,7 +112,17 @@ def normalized(column, normalization):
     return column / normalization
 
 def streak_counter(df, col_name):
-    return df.groupby((df[col_name] != df[col_name].shift(1)).cumsum()).cumcount()
+    # For an input column like:
+    # True,True,True,False,True,False,False,False,False,True
+    # this will get streak counts like:
+    # 0,1,2,0,0,0,1,2,3,0
+    cum_counted = df.groupby((df[col_name] != df[col_name].shift(1)).cumsum()).cumcount()
+
+    # we want to differentiate between streaks of true values and streaks of false values
+    # so we use negative values for False streaks, like:
+    # 0,1,2,0,0,0,-1,-2,-3,0
+    cum_counted[df[col_name] == False] = cum_counted * -1
+    return cum_counted
 
 def max_over_window(column, length):
     return column.rolling(window=length, min_periods=length).max()
