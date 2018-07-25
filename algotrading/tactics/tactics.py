@@ -11,3 +11,6 @@ into the future before it happens.
 
 def hold_open_to_close(df):
     return df.c.shift(-1) - df.o.shift(-1)
+
+def hold_open_to_open(df):
+    return df.o.shift(-2) - df.o.shift(-1)

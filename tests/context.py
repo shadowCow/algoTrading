@@ -2,6 +2,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+import math
 import pandas
 import numpy
 import algotrading
@@ -60,3 +61,13 @@ def dummy_trade_simulator(df, feature_columns):
     df = df.assign(outcome=(df.c - df.o) * df.trading_action)
     # hold from open to close
     return df
+
+# helper function to do element by element equality of two series
+def assert_elements_equal(test_object, expected_series, actual_series):
+    for i in range(5):
+        both_nan = math.isnan(expected_series[i]) and math.isnan(actual_series[i])
+        if both_nan:
+            # They are considered equal for this test.
+            pass
+        else:
+            test_object.assertAlmostEqual(expected_series[i], actual_series[i], places=3)

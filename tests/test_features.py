@@ -8,6 +8,7 @@ from .context import get_test_data_frame_one
 from .context import get_test_data_frame_two
 from .context import get_test_market_a
 from .context import get_test_market_b
+from .context import assert_elements_equal
 
 import algotrading.data.feature as feature_engineering
 import algotrading.data.features as features
@@ -21,7 +22,7 @@ class TestVariousFeatures(unittest.TestCase):
 
         expected_data = pd.Series([0.8, 1.0, 1.3, -1.0, -1.2], index=dates)
         actual_data = markets_with_features[0]['data']['oc_change']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_oc_range(self):
         markets_with_features = TestVariousFeatures.get_test_data_with_feature(
@@ -30,7 +31,7 @@ class TestVariousFeatures(unittest.TestCase):
 
         expected_data = pd.Series([0.8, 1.0, 1.3, 1.0, 1.2], index=dates)
         actual_data = markets_with_features[0]['data']['oc_range']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_hl_range(self):
         markets_with_features = TestVariousFeatures.get_test_data_with_feature(
@@ -39,7 +40,7 @@ class TestVariousFeatures(unittest.TestCase):
 
         expected_data = pd.Series([0.8, 1.4, 2.0, 1.4, 1.3], index=dates)
         actual_data = markets_with_features[0]['data']['hl_range']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_ol_range(self):
         markets_with_features = TestVariousFeatures.get_test_data_with_feature(
@@ -48,7 +49,7 @@ class TestVariousFeatures(unittest.TestCase):
 
         expected_data = pd.Series([0, 0.2, 0.4, 1.2, 1.3], index=dates)
         actual_data = markets_with_features[0]['data']['ol_range']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_oh_range(self):
         markets_with_features = TestVariousFeatures.get_test_data_with_feature(
@@ -57,7 +58,7 @@ class TestVariousFeatures(unittest.TestCase):
 
         expected_data = pd.Series([0.8, 1.2, 1.6, 0.2, 0], index=dates)
         actual_data = markets_with_features[0]['data']['oh_range']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_oc_is_up(self):
         markets_with_features = TestVariousFeatures.get_test_data_with_feature(
@@ -66,7 +67,7 @@ class TestVariousFeatures(unittest.TestCase):
 
         expected_data = pd.Series([1.0, 1.0, 1.0, 0.0, 0.0], index=dates)
         actual_data = markets_with_features[0]['data']['oc_is_up']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_oc_is_down(self):
         markets_with_features = TestVariousFeatures.get_test_data_with_feature(
@@ -75,7 +76,7 @@ class TestVariousFeatures(unittest.TestCase):
 
         expected_data = pd.Series([0.0, 0.0, 0.0, 1.0, 1.0], index=dates)
         actual_data = markets_with_features[0]['data']['oc_is_down']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_oc_is_flat(self):
         markets_with_features = feature_engineering.apply_features_to_markets(
@@ -85,7 +86,7 @@ class TestVariousFeatures(unittest.TestCase):
 
         expected_data = pd.Series([0.0, 0.0, 0.0, 1.0, 0.0], index=dates)
         actual_data = markets_with_features[0]['data']['oc_is_flat']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_moving_average(self):
         markets_with_features = TestVariousFeatures.get_test_data_with_feature(
@@ -113,7 +114,7 @@ class TestVariousFeatures(unittest.TestCase):
 
         expected_data = pd.Series([0,1,2,0,-1], index=dates)
         actual_data = markets_with_features[0]['data']['streak_oc_is_up']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_is_true_streak(self):
         markets_with_features = feature_engineering.apply_features_to_markets(
@@ -123,7 +124,7 @@ class TestVariousFeatures(unittest.TestCase):
 
         expected_data = pd.Series([False,True,True,False,False], index=dates)
         actual_data = markets_with_features[0]['data']['is_true_streak_oc_is_up']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_is_false_streak(self):
         markets_with_features = feature_engineering.apply_features_to_markets(
@@ -133,7 +134,7 @@ class TestVariousFeatures(unittest.TestCase):
 
         expected_data = pd.Series([False,False,False,False,True], index=dates)
         actual_data = markets_with_features[0]['data']['is_false_streak_oc_is_up']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_rolling_max(self):
         markets_with_features = feature_engineering.apply_features_to_markets(
@@ -170,7 +171,7 @@ class TestVariousFeatures(unittest.TestCase):
         # i think nan would be preferred for the first 2, but whatever.
         expected_data = pd.Series([False, False, True, False, False])
         actual_data = markets_with_features[0]['data']['is_max_3_c']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+        assert_elements_equal(self, expected_data, actual_data)
 
     def test_is_min_over_window(self):
         markets_with_features = TestVariousFeatures.get_test_data_with_feature(
@@ -180,13 +181,7 @@ class TestVariousFeatures(unittest.TestCase):
         # i think nan would be preferred for the first 2, but whatever.
         expected_data = pd.Series([False, False, False, True, True])
         actual_data = markets_with_features[0]['data']['is_min_3_c']
-        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
-
-    # helper function to do element by element equality of two series
-    @staticmethod
-    def assert_elements_equal(test_object, expected_series, actual_series):
-        for i in range(5):
-            test_object.assertAlmostEqual(expected_series[i], actual_series[i], places=3)
+        assert_elements_equal(self, expected_data, actual_data)
 
     @staticmethod
     def get_test_data_with_feature(feature):
