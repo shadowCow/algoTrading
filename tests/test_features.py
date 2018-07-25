@@ -115,6 +115,26 @@ class TestVariousFeatures(unittest.TestCase):
         actual_data = markets_with_features[0]['data']['streak_oc_is_up']
         TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
 
+    def test_is_true_streak(self):
+        markets_with_features = feature_engineering.apply_features_to_markets(
+            [features.is_true_streak_feature(features.oc_is_up)],
+            [get_test_market_a()]
+        )
+
+        expected_data = pd.Series([False,True,True,False,False], index=dates)
+        actual_data = markets_with_features[0]['data']['is_true_streak_oc_is_up']
+        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+
+    def test_is_false_streak(self):
+        markets_with_features = feature_engineering.apply_features_to_markets(
+            [features.is_false_streak_feature(features.oc_is_up)],
+            [get_test_market_a()]
+        )
+
+        expected_data = pd.Series([False,False,False,False,True], index=dates)
+        actual_data = markets_with_features[0]['data']['is_false_streak_oc_is_up']
+        TestVariousFeatures.assert_elements_equal(self, expected_data, actual_data)
+
     def test_rolling_max(self):
         markets_with_features = feature_engineering.apply_features_to_markets(
             [features.rolling_max_feature(features.raw_data_as_feature('h'), 3)],

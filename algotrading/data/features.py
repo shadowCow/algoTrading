@@ -81,19 +81,46 @@ def rolling_min_feature(feature, length):
         lambda df: min_over_window(feature.transform(df), length)
     )
 
-def streak_counter_feature(feature):
-    def include_feature_in_df(df, feature):
-        new_col = feature.transform(df).rename(feature.name)
-        new_df = pd.concat([df, new_col], axis=1)
-        return streak_counter(
-            new_df,
-            feature.name
-        )
+# Helper
+def get_streak_counter_for_feature(df, feature):
+    new_col = feature.transform(df).rename(feature.name)
+    new_df = pd.concat([df, new_col], axis=1)
+    return streak_counter(
+        new_df,
+        feature.name
+    )
 
+def streak_counter_feature(feature):
     return Feature(
         'streak_{}'.format(feature.name),
         VariableTypes.discrete,
-        lambda df: include_feature_in_df(df, feature)
+        lambda df: get_streak_counter_for_feature(df, feature)
+    )
+
+def is_true_streak_feature(feature):
+    def compute(df, feature):
+        streak_counter = get_streak_counter_for_feature(df, feature)
+        streak_counter[streak_counter > 0] = True
+        streak_counter[streak_counter <= 0] = False
+        return streak_counter
+
+    return Feature(
+        'is_true_streak_{}'.format(feature.name),
+        VariableTypes.binary,
+        lambda df: compute(df, feature)
+    )
+
+def is_false_streak_feature(feature):
+    def compute(df, feature):
+        streak_counter = get_streak_counter_for_feature(df, feature)
+        streak_counter[streak_counter >= 0] = False
+        streak_counter[streak_counter < 0] = True
+        return streak_counter
+
+    return Feature(
+        'is_false_streak_{}'.format(feature.name),
+        VariableTypes.binary,
+        lambda df: compute(df, feature)
     )
 
 def is_max_feature(feature, length):
