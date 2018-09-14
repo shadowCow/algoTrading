@@ -150,6 +150,55 @@ class TestVariousFeatures(unittest.TestCase):
         self.assertAlmostEqual(expected_data[3], actual_data[3], places=3)
         self.assertAlmostEqual(expected_data[4], actual_data[4], places=3)
 
+    def test_rolling_min(self):
+        markets_with_features = feature_engineering.apply_features_to_markets(
+            [features.rolling_min_feature(features.raw_data_as_feature('l'), 3)],
+            [get_test_market_b()]
+        )
+
+        expected_data = pd.Series([np.nan, np.nan, 19.50, 19.50, 17.65], index=dates)
+        actual_data = markets_with_features[0]['data']['min_3_l']
+        self.assertTrue(pd.isnull(actual_data[0]))
+        self.assertTrue(pd.isnull(actual_data[1]))
+        self.assertAlmostEqual(expected_data[2], actual_data[2])
+        self.assertAlmostEqual(expected_data[3], actual_data[3], places=3)
+        self.assertAlmostEqual(expected_data[4], actual_data[4], places=3)
+
+    def test_is_last_above_average(self):
+        markets_with_features = feature_engineering.apply_features_to_markets(
+            [features.is_last_above_average(features.oc_range, 3)],
+            [get_test_market_b()]
+        )
+
+        expected_data = pd.Series([False, False, False, False, True], index=dates)
+        actual_data = markets_with_features[0]['data']['is_last_above_average_3_oc_range']
+        assert_elements_equal(self, expected_data, actual_data)
+
+    def test_is_last_below_average(self):
+        markets_with_features = feature_engineering.apply_features_to_markets(
+            [features.is_last_below_average(features.oc_range, 3)],
+            [get_test_market_b()]
+        )
+
+        # the first 3 are false of 'no value'
+        expected_data = pd.Series([False, False, False, True, False], index=dates)
+        actual_data = markets_with_features[0]['data']['is_last_below_average_3_oc_range']
+        assert_elements_equal(self, expected_data, actual_data)
+
+    def test_last_to_average_ratio(self):
+        markets_with_features = feature_engineering.apply_features_to_markets(
+            [features.last_to_average_ratio(features.oc_range, 3)],
+            [get_test_market_a()]
+        )
+
+        expected_data = pd.Series([np.nan, np.nan, np.nan, 0.9677, 1.0909], index=dates)
+        actual_data = markets_with_features[0]['data']['last_to_average_ratio_3_oc_range']
+        self.assertTrue(pd.isnull(actual_data[0]))
+        self.assertTrue(pd.isnull(actual_data[1]))
+        self.assertTrue(pd.isnull(actual_data[2]))
+        self.assertAlmostEqual(expected_data[3], actual_data[3], places=3)
+        self.assertAlmostEqual(expected_data[4], actual_data[4], places=3)
+
     def test_min_over_window(self):
         markets_with_features = TestVariousFeatures.get_test_data_with_feature(
             features.rolling_min_feature(features.raw_data_as_feature('l'), 3)

@@ -59,7 +59,55 @@ oc_is_flat = Feature(
     lambda df: df.o == df.c
 )
 
+# multi-bar stuff
+
+# volatility
+oc_range_is_up = Feature(
+    'oc_range_is_up',
+    VariableTypes.binary,
+    lambda df: oc_range.transform(df)
+)
+
+def average_oc_range(length):
+    return moving_average_feature(oc_range, length)
+
+def average_hl_range(length):
+    return moving_average_feature(hl_range, length)
+
+
+
 # window features
+def change_over_time_feature(feature, length):
+    """
+    Compute the change in a given feature between the current value,
+    and a value (length-1) periods previous.
+
+    e.g. Given a 2 period feature f1 with values: [1.0, 3.0],
+    change_over_time_feature(f1, 2) would yield 2.0
+    """
+    transformed = feature.transform(df)
+    return Feature(
+        'cot_{}_{}'.format(feature.name, length),
+        VariableTypes.continuous,
+        lambda df: transformed - transformed.shift(length-1)
+    )
+
+def range_over_time_feature(feature, length):
+    """
+    Compute the range in a given feature between the current value,
+    and a value (length-1) periods previous.
+    Since it is a range - all results will be >= 0.
+
+    e.g. Given a 2 period feature f1 with values: [4.0, 3.0],
+    range_over_time_feature(f1, 2) would yield 1.0
+    """
+    transformed = feature.transform(df)
+    return Feature(
+        'rot_{}_{}'.format(feature.name, length),
+        VariableTypes.continuous,
+        lambda df: (transformed - transformed.shift(length-1)).abs()
+    )
+
 def moving_average_feature(feature, length):
     return Feature(
         'ma_{}_{}'.format(length, feature.name),
@@ -81,7 +129,44 @@ def rolling_min_feature(feature, length):
         lambda df: min_over_window(feature.transform(df), length)
     )
 
-# Helper
+def is_last_above_average(feature, length):
+    def transform(df):
+        new_col = feature.transform(df).rename(feature.name)
+        with_feature = pd.concat([df, new_col], axis=1)
+        return with_feature[feature.name] > moving_average(with_feature[feature.name], length).shift(1)
+
+    return Feature(
+        'is_last_above_average_{}_{}'.format(length, feature.name),
+        VariableTypes.binary,
+        lambda df: transform(df)
+    )
+
+def is_last_below_average(feature, length):
+    def transform(df):
+        new_col = feature.transform(df).rename(feature.name)
+        with_feature = pd.concat([df, new_col], axis=1)
+        return with_feature[feature.name] < moving_average(with_feature[feature.name], length).shift(1)
+
+    return Feature(
+        'is_last_below_average_{}_{}'.format(length, feature.name),
+        VariableTypes.binary,
+        lambda df: transform(df)
+    )
+
+def last_to_average_ratio(feature, length):
+    def transform(df):
+        new_col = feature.transform(df).rename(feature.name)
+        with_feature = pd.concat([df, new_col], axis=1)
+        return with_feature[feature.name] / moving_average(with_feature[feature.name], length).shift(1)
+
+    return Feature(
+        'last_to_average_ratio_{}_{}'.format(length, feature.name),
+        VariableTypes.continuous,
+        lambda df: transform(df)
+    )
+    
+# Helpers
+
 def get_streak_counter_for_feature(df, feature):
     new_col = feature.transform(df).rename(feature.name)
     new_df = pd.concat([df, new_col], axis=1)

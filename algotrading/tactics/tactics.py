@@ -14,3 +14,6 @@ def hold_open_to_close(df):
 
 def hold_open_to_open(df):
     return df.o.shift(-2) - df.o.shift(-1)
+
+def normalized_open_to_open(df, normalizing_feature):
+    return (hold_open_to_open(df) / normalizing_feature.transform(df))
