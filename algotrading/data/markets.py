@@ -45,3 +45,8 @@ markets = [
     Market("US", "U.S. Thirty Year Treasury Bonds"),
     Market("W", "Wheat")
 ]
+
+class MarketWithData:
+    def __init__(self, market, data):
+        self.market = market
+        self.data = data

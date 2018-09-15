@@ -16,7 +16,7 @@ my_features = [
     features.is_last_above_average(features.oc_range, 5),
 
     # price change
-    # - continuous variables - normalized by volatility
+    # - continuous variables
     features.last_to_average_ratio(features.oc_range, 5),
 
     # patterns

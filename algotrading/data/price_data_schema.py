@@ -8,6 +8,4 @@ class PriceDataSchema:
         self.true_range = true_range
 
 
-priceDataSchemas = {
-    "v1": PriceDataSchema("date", "o", "h", "l", "c", "tr")
-}
+price_data_schema = PriceDataSchema("date", "o", "h", "l", "c", "tr")

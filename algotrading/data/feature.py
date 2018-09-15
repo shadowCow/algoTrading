@@ -1,5 +1,4 @@
 import pandas as pd
-from enum import Enum
 
 
 class Feature(object):
@@ -24,8 +23,3 @@ def apply_features_to_markets(features, markets_data):
     return list(map(lambda m: apply_features_to_market(features, m), markets_data))
 
 
-class VariableTypes(Enum):
-    continuous = 1
-    discrete = 2
-    binary = 3
-    multiclass = 4
