@@ -5,7 +5,6 @@ import sys
 import algotrading.data.markets as markets
 import algotrading.data.feature as feature_engineering
 import algotrading.data.features as features
-import algotrading.tactics.tactics as tactics
 import algotrading.tradingmodel.trading_models as trading_models
 import algotrading.tradingmodel.trading_model as trading_model
 import algotrading.decisionmodel.decision_models as decision_models
