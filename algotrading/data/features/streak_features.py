@@ -29,7 +29,7 @@ class StreakCounterByValueFeature(AbstractFeature):
 
     def _do_transform(self, X):
         num_rows, unused_num_columns = X.shape
-        new_series = pd.Series(np.zeros(num_rows), index=X.index.values)
+        new_series = pd.Series(np.zeros(num_rows), index=X.index.values, dtype="int64")
 
         new_series[X[self.source_feature_name] == self.target_value] = X[self.streak_feature_name]
         return new_series

@@ -72,6 +72,10 @@ def assert_elements_equal(test_object, expected_series, actual_series):
         assert_float_series_elements_equal(test_object, expected_series, actual_series)
     elif (expected_series.dtype == 'object' and actual_series.dtype == 'object'):
         assert_object_series_elements_equal(test_object, expected_series, actual_series)
+    elif (expected_series.dtype == actual_series.dtype):
+        assert_object_series_elements_equal(test_object, expected_series, actual_series)
+    else:
+        test_object.fail("unsupported series pair: {}, {}".format(expected_series.dtype, actual_series.dtype))
 
 
 def assert_float_series_elements_equal(test_object, expected_series, actual_series):

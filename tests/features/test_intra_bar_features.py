@@ -68,4 +68,29 @@ class TestIntraBarFeatures(unittest.TestCase):
         
         assert_elements_equal(self, expected_data, transformed_data)
 
-    
+    def test_is_up_body(self):
+        market = get_test_market_b()
+        feature = ibf.IsUpBody()
+
+        expected_data = pd.Series([0, 1, 0, 0, 0], index=dates)
+        transformed_data = feature.fit_transform(market.data)[feature.name]
+
+        assert_elements_equal(self, expected_data, transformed_data)
+
+    def test_is_down_body(self):
+        market = get_test_market_b()
+        feature = ibf.IsDownBody()
+
+        expected_data = pd.Series([1,0,1,0,1], index=dates)
+        transformed_data = feature.fit_transform(market.data)[feature.name]
+
+        assert_elements_equal(self, expected_data, transformed_data)
+
+    def test_body_proportion(self):
+        market = get_test_market_a()
+        feature = ibf.BodyProportion()
+
+        expected_data = pd.Series([1.0, 1.0/1.4, 1.3/2.0, 1.0/1.4, 1.2/1.3], index=dates)
+        transformed_data = feature.fit_transform(market.data)[feature.name]
+
+        assert_elements_equal(self, expected_data, transformed_data)

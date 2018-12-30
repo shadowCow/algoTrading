@@ -1,3 +1,5 @@
+import numpy as np
+
 from abc import abstractmethod
 
 from algotrading.data.features.feature_helpers import AbstractFeature
@@ -30,6 +32,14 @@ class Average(WindowFeature):
 
     def _do_transform_window(self, X):
         return X.mean()
+
+
+class Median(WindowFeature):
+    def __init__(self, source_feature_name, window_length):
+        super().__init__(source_feature_name, "median", window_length)
+
+    def _do_transform_window(self, X):
+        return X.median()
         
 
 class Max(WindowFeature):
@@ -63,3 +73,18 @@ class Range(WindowFeature):
     def _do_transform_window(self, X):
         return X.max() - X.min()
 
+
+class UpBarProportion(WindowFeature):
+    def __init__(self, window_length):
+        super().__init__("is_up_body", "up_bar_proportion", window_length)
+
+    def _do_transform_window(self, X):
+        return X.apply(lambda s: s.sum() / self.window_length)
+
+
+class DownBarProportion(WindowFeature):
+    def __init__(self, window_length):
+        super().__init__("is_down_body", "down_bar_proportion", window_length)
+
+    def _do_transform_window(self, X):
+        return X.apply(lambda s: s.sum() / self.window_length)

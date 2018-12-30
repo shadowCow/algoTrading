@@ -25,6 +25,15 @@ class TestWindowFeatures(unittest.TestCase):
 
         assert_elements_equal(self, expected_data, transformed_data)
 
+    def test_median(self):
+        market = get_test_market_a()
+        median = wf.Median(schema.close, 3)
+
+        expected_data = pd.Series([np.nan, np.nan, 3.3, 3.3, 2.4], index=dates)
+        transformed_data = median.fit_transform(market.data)[median.name]
+
+        assert_elements_equal(self, expected_data, transformed_data)
+
     def test_rolling_max(self):
         market = get_test_market_b()
         max = wf.Max(schema.high, 3)
@@ -58,6 +67,28 @@ class TestWindowFeatures(unittest.TestCase):
 
         expected_data = pd.Series([np.nan, np.nan, 3.1, 1.5, 3.0], index=dates)
         transformed_data = range.fit_transform(market.data)[range.name]
+
+        assert_elements_equal(self, expected_data, transformed_data)
+        
+    def test_up_bar_proportion(self):
+        market = get_test_market_a()
+        up_bar_proportion = wf.UpBarProportion(3)
+
+        data_with_is_up_body = ibf.IsUpBody().fit_transform(market.data)
+        
+        expected_data = pd.Series([np.nan, np.nan, 1.0, 2/3, 1/3], index=dates)
+        transformed_data = up_bar_proportion.fit_transform(data_with_is_up_body)[up_bar_proportion.name]
+
+        assert_elements_equal(self, expected_data, transformed_data)
+
+    def test_down_bar_proportion(self):
+        market = get_test_market_a()
+        down_bar_proportion = wf.DownBarProportion(3)
+
+        data_with_is_down_body = ibf.IsDownBody().fit_transform(market.data)
+
+        expected_data = pd.Series([np.nan, np.nan, 0.0, 1/3, 2/3], index=dates)
+        transformed_data = down_bar_proportion.fit_transform(data_with_is_down_body)[down_bar_proportion.name]
 
         assert_elements_equal(self, expected_data, transformed_data)
         
