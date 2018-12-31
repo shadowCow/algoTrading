@@ -7,7 +7,7 @@ from algotrading.data.markets import markets
 market_with_data = load_daily_data("futures_price_data", markets[3])
 
 derive_feature_steps = [
-    
+        
 ]
 
 data_frame_pipeline = Pipeline(derive_feature_steps)
